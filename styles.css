@@ -1,0 +1,886 @@
+/* ============================================
+   VARIABLES & RESET
+============================================ */
+:root {
+  --purple-900: #4A148C;
+  --purple-700: #7E57C2;
+  --purple-500: #9575CD;
+  --purple-300: #B39DDB;
+  --purple-100: #EDE7F6;
+
+  --pink-400: #F48FB1;
+  --pink-200: #F8BBD0;
+
+  --bg: #FAF7FD;
+  --white: #FFFFFF;
+  --text: #3D2A5C;
+  --text-soft: #6B5B8A;
+
+  --shadow-sm: 0 4px 14px rgba(126, 87, 194, 0.10);
+  --shadow-md: 0 10px 30px rgba(126, 87, 194, 0.15);
+  --shadow-lg: 0 20px 50px rgba(126, 87, 194, 0.22);
+
+  --radius: 22px;
+  --radius-sm: 14px;
+
+  --transition: 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Poppins', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(179, 157, 219, 0.15), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(248, 187, 208, 0.18), transparent 40%);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font-family: inherit; border: none; }
+
+.container { width: min(1200px, 92%); margin: 0 auto; }
+
+/* Títulos */
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.6rem;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--text-soft);
+  margin-bottom: 2.6rem;
+  font-size: 1rem;
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--purple-700), var(--pink-400));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ============================================
+   MARIPOSAS GLOBALES DE FONDO
+============================================ */
+.butterflies-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bfly {
+  position: absolute;
+  font-size: 1.4rem;
+  opacity: 0.18;
+  filter: drop-shadow(0 2px 4px rgba(126, 87, 194, 0.3));
+}
+
+.bfly-1 { top: 12%; left: 5%; animation: flyA 18s ease-in-out infinite; }
+.bfly-2 { top: 30%; right: 8%; animation: flyB 22s ease-in-out infinite; }
+.bfly-3 { bottom: 25%; left: 12%; animation: flyA 20s ease-in-out infinite reverse; }
+.bfly-4 { bottom: 10%; right: 15%; animation: flyB 16s ease-in-out infinite; }
+.bfly-5 { top: 55%; left: 48%; animation: flyA 24s ease-in-out infinite; }
+
+@keyframes flyA {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(30px, -20px) rotate(8deg); }
+  50% { transform: translate(-20px, 25px) rotate(-6deg); }
+  75% { transform: translate(25px, 15px) rotate(4deg); }
+}
+
+@keyframes flyB {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-25px, 20px) rotate(-8deg); }
+  50% { transform: translate(20px, -25px) rotate(6deg); }
+  75% { transform: translate(-15px, -15px) rotate(-4deg); }
+}
+
+/* ============================================
+   NAVBAR
+============================================ */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1rem 0;
+  background: rgba(250, 247, 253, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(179, 157, 219, 0.2);
+  transition: all var(--transition);
+}
+
+.navbar.scrolled {
+  padding: 0.6rem 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--purple-900);
+}
+
+.logo-icon { font-size: 1.5rem; animation: flutter 3s ease-in-out infinite; }
+
+@keyframes flutter {
+  0%, 100% { transform: rotate(-6deg); }
+  50% { transform: rotate(6deg); }
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text);
+  position: relative;
+  transition: color var(--transition);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -4px;
+  width: 0; height: 2px;
+  background: linear-gradient(90deg, var(--purple-700), var(--pink-400));
+  transition: width var(--transition);
+}
+
+.nav-links a:hover { color: var(--purple-700); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-toggle {
+  display: none;
+  font-size: 1.4rem;
+  color: var(--purple-700);
+  background: transparent;
+}
+
+/* ============================================
+   HERO
+============================================ */
+.hero {
+  position: relative;
+  padding: 10rem 0 6rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 15% 30%, rgba(179, 157, 219, 0.25), transparent 45%),
+    radial-gradient(circle at 85% 70%, rgba(248, 187, 208, 0.25), transparent 45%);
+  z-index: 0;
+}
+
+.hero-content { position: relative; z-index: 2; }
+
+.hero-script {
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  color: var(--pink-400);
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 6vw, 4.2rem);
+  line-height: 1.15;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.hero-subtitle {
+  max-width: 620px;
+  margin: 0 auto 2.5rem;
+  color: var(--text-soft);
+  font-size: clamp(1rem, 2vw, 1.15rem);
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.8rem;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 0.98rem;
+  transition: all var(--transition);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple-700), var(--pink-400));
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+  background: var(--white);
+  color: var(--purple-700);
+  border: 2px solid var(--purple-300);
+}
+
+.btn-outline:hover {
+  background: var(--purple-100);
+  transform: translateY(-3px);
+}
+
+.btn-whatsapp {
+  background: #25D366;
+  color: white;
+  margin-top: 1.5rem;
+}
+
+.btn-whatsapp:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.hero-deco {
+  position: absolute;
+  font-size: 4rem;
+  opacity: 0.5;
+  z-index: 1;
+}
+.hero-deco-left { top: 20%; left: 6%; transform: rotate(-15deg); }
+.hero-deco-right { bottom: 15%; right: 6%; transform: rotate(12deg); }
+
+.hero-butterflies .bfly-float {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0.65;
+  z-index: 1;
+}
+
+.bfly-a { top: 18%; left: 15%; animation: flutter 4s ease-in-out infinite; }
+.bfly-b { top: 28%; right: 18%; animation: flutter 5s ease-in-out infinite reverse; }
+.bfly-c { bottom: 22%; left: 22%; animation: flutter 6s ease-in-out infinite; }
+
+/* ============================================
+   REDES SOCIALES
+============================================ */
+.social-section { padding: 5rem 0; }
+
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.social-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 2rem 1rem;
+  border-radius: var(--radius);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(179, 157, 219, 0.2);
+}
+
+.social-card i {
+  font-size: 2.4rem;
+  transition: transform var(--transition);
+}
+
+.social-card span { font-weight: 500; }
+
+.social-card::after {
+  content: '🦋';
+  position: absolute;
+  top: 8px; right: 12px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.social-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.social-card:hover i { transform: scale(1.15) rotate(-6deg); }
+.social-card:hover::after { opacity: 0.8; transform: rotate(10deg); }
+
+.instagram i { color: #E1306C; }
+.facebook i { color: #1877F2; }
+.tiktok i { color: #000; }
+.whatsapp i { color: #25D366; }
+
+/* ============================================
+   SOBRE EL PROYECTO
+============================================ */
+.about { padding: 5rem 0; }
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.about-image { position: relative; }
+
+.about-frame {
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(179, 157, 219, 0.35), rgba(248, 187, 208, 0.35)),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="2" fill="%237E57C2" opacity="0.15"/></svg>');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  border: 3px dashed rgba(126, 87, 194, 0.3);
+}
+
+.about-placeholder { font-size: 6rem; }
+
+.about-butterfly {
+  position: absolute;
+  top: -20px; right: -10px;
+  font-size: 2.5rem;
+  animation: flutter 3s ease-in-out infinite;
+}
+
+.about-text p { color: var(--text-soft); margin-bottom: 1rem; }
+
+.about-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.mini-card {
+  background: var(--white);
+  padding: 1.2rem 0.8rem;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  border-top: 3px solid var(--purple-300);
+}
+
+.mini-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+
+.mini-card i { font-size: 1.5rem; color: var(--purple-700); margin-bottom: 0.4rem; }
+.mini-card h4 { font-size: 0.95rem; color: var(--purple-900); }
+.mini-card p { font-size: 0.8rem; color: var(--text-soft); margin: 0; }
+
+/* ============================================
+   LIBROS
+============================================ */
+.books { padding: 5rem 0; }
+
+.shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  position: relative;
+}
+
+/* Libro */
+.book {
+  position: relative;
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  cursor: pointer;
+  border: 1px solid rgba(179, 157, 219, 0.2);
+}
+
+.book:hover {
+  transform: translateY(-10px) rotate(-1deg);
+  box-shadow: var(--shadow-lg);
+}
+
+.book-cover {
+  aspect-ratio: 3/4;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  margin-bottom: 0.9rem;
+  background: linear-gradient(135deg, var(--purple-300), var(--pink-200));
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition);
+}
+
+.book:hover .book-cover { transform: scale(1.03); }
+
+.book-butterfly {
+  position: absolute;
+  top: 6px; right: 8px;
+  font-size: 1.1rem;
+  animation: flutter 3.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+.book-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--purple-900);
+  margin-bottom: 0.2rem;
+  line-height: 1.3;
+}
+
+.book-author {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  margin-bottom: 0.5rem;
+}
+
+.book-rating {
+  color: #FFB74D;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: 1px;
+}
+
+.book-genre {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  background: var(--purple-100);
+  color: var(--purple-700);
+  font-weight: 500;
+  margin-bottom: 0.6rem;
+}
+
+.book-review {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.quote {
+  text-align: center;
+  margin-top: 3rem;
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: var(--purple-700);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1.5rem;
+  border-top: 2px dashed rgba(179, 157, 219, 0.4);
+  border-bottom: 2px dashed rgba(179, 157, 219, 0.4);
+}
+
+/* ============================================
+   CATÁLOGO
+============================================ */
+.catalog { padding: 5rem 0; }
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.product {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(179, 157, 219, 0.2);
+}
+
+.product:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+
+.product-image {
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, var(--purple-100), var(--pink-200));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+}
+
+.product-info { padding: 1.3rem; display: flex; flex-direction: column; flex: 1; }
+
+.product-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--purple-900);
+  margin-bottom: 0.3rem;
+}
+
+.product-desc {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  margin-bottom: 0.8rem;
+  flex: 1;
+}
+
+.product-price {
+  font-weight: 700;
+  color: var(--purple-700);
+  font-size: 1.15rem;
+  margin-bottom: 0.9rem;
+}
+
+.btn-buy {
+  background: linear-gradient(135deg, var(--purple-700), var(--pink-400));
+  color: white;
+  padding: 0.65rem 1rem;
+  border-radius: 50px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  width: 100%;
+  transition: all var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.btn-buy:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* ============================================
+   MEDIOS DE PAGO
+============================================ */
+.payments { padding: 5rem 0; }
+
+.payments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.payment-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 2rem 1rem;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+}
+
+.payment-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.payment-card i { font-size: 2rem; color: var(--purple-700); }
+.payment-card span { font-size: 0.9rem; font-weight: 500; }
+
+/* ============================================
+   GALERÍA
+============================================ */
+.gallery { padding: 5rem 0; }
+
+.masonry {
+  columns: 3 220px;
+  column-gap: 1.2rem;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 1.2rem;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: all var(--transition);
+}
+
+.masonry-item:hover { transform: scale(1.02); }
+
+.ph {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--purple-300), var(--pink-200));
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.masonry-item:nth-child(1) .ph { aspect-ratio: 3/4; }
+.masonry-item:nth-child(2) .ph { aspect-ratio: 1; }
+.masonry-item:nth-child(3) .ph { aspect-ratio: 4/5; }
+.masonry-item:nth-child(4) .ph { aspect-ratio: 1; }
+.masonry-item:nth-child(5) .ph { aspect-ratio: 3/4; }
+.masonry-item:nth-child(6) .ph { aspect-ratio: 1; }
+
+/* ============================================
+   CONTACTO
+============================================ */
+.contact { padding: 5rem 0; }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.contact-info p { color: var(--text-soft); margin-bottom: 1.2rem; }
+
+.contact-list { list-style: none; margin-bottom: 1rem; }
+.contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+  font-size: 0.95rem;
+}
+.contact-list i { color: var(--purple-700); width: 20px; }
+
+.contact-form {
+  background: var(--white);
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(179, 157, 219, 0.2);
+}
+
+.form-group { margin-bottom: 1.2rem; }
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--purple-900);
+  margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid rgba(179, 157, 219, 0.35);
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text);
+  background: var(--bg);
+  transition: all var(--transition);
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--purple-700);
+  box-shadow: 0 0 0 3px rgba(126, 87, 194, 0.12);
+}
+
+.contact-form .btn { width: 100%; justify-content: center; }
+
+.form-msg {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--purple-700);
+  min-height: 1.2rem;
+}
+
+/* ============================================
+   FOOTER
+============================================ */
+.footer {
+  position: relative;
+  background: linear-gradient(135deg, var(--purple-900), var(--purple-700));
+  color: var(--purple-100);
+  padding: 4rem 0 2rem;
+  margin-top: 4rem;
+  overflow: hidden;
+}
+
+/* Borde tejido superior */
+.crochet-border {
+  position: absolute;
+  top: -14px; left: 0; right: 0;
+  height: 28px;
+  background-image: radial-gradient(circle, var(--purple-900) 8px, transparent 9px);
+  background-size: 24px 24px;
+  background-position: 0 -12px;
+  background-repeat: repeat-x;
+}
+
+.footer-content { text-align: center; position: relative; z-index: 2; }
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--white);
+}
+
+.footer-quote {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  color: var(--pink-200);
+  margin-bottom: 1.5rem;
+}
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.footer-social a {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: var(--white);
+  transition: all var(--transition);
+}
+
+.footer-social a:hover {
+  background: var(--pink-400);
+  transform: translateY(-4px) rotate(-8deg);
+}
+
+.footer-copy { font-size: 0.85rem; opacity: 0.75; }
+
+.footer-butterflies .bfly-float {
+  position: absolute;
+  font-size: 1.8rem;
+  opacity: 0.3;
+}
+
+.bfly-f1 { top: 20%; left: 8%; animation: flutter 4s ease-in-out infinite; }
+.bfly-f2 { bottom: 20%; right: 10%; animation: flutter 5s ease-in-out infinite reverse; }
+
+/* ============================================
+   ANIMACIONES REVEAL
+============================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 900px) {
+  .about-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .about-image { max-width: 380px; margin: 0 auto; }
+
+  .hero-deco { font-size: 2.5rem; opacity: 0.35; }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 64px; right: 0;
+    flex-direction: column;
+    background: var(--white);
+    width: 220px;
+    padding: 1.5rem;
+    gap: 1rem;
+    border-radius: 0 0 0 var(--radius);
+    box-shadow: var(--shadow-md);
+    transform: translateX(110%);
+    transition: transform var(--transition);
+  }
+
+  .nav-links.open { transform: translateX(0); }
+
+  .nav-toggle { display: block; }
+
+  .hero { padding: 8rem 0 4rem; }
+
+  .about-cards { grid-template-columns: 1fr; }
+
+  .masonry { columns: 2 160px; }
+}
+
+@media (max-width: 480px) {
+  .hero-title { font-size: 2rem; }
+  .btn { padding: 0.8rem 1.4rem; font-size: 0.9rem; }
+  .masonry { columns: 1; }
+  .contact-form { padding: 1.5rem; }
+}
