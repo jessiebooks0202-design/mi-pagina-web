@@ -1,0 +1,10 @@
+media: img
+
+content:
+  - name: inicio
+    label: Página Principal
+    path: index.html
+    type: file
+    format: code
+    options:
+      language: html
