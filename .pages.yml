@@ -5,6 +5,5 @@ content:
     label: Página Principal
     path: index.html
     type: file
-    format: code
-    options:
-      language: html
+    format: raw
+    
